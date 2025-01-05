@@ -7,15 +7,15 @@ import Link from "next/link"
 const Home = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
   const searchQuery = (searchParams?.query as string) || '';
-
   const images = await getAllImages({ page, searchQuery})
 
   return (
     <>
-      <section className="home">
+      <section className="bg-purple-gradient py-16 flex-col flex-center gap-8 mx-4 rounded-2xl">
         <h1 className="home-heading">
-          Unleash Your Creative Vision with Pixify 
+          Transform Your Ideas into Reality with Pixify
         </h1>
+        
         <ul className="flex-center w-full gap-20">
           {navLinks.slice(1, 5).map((link) => (
             <Link
