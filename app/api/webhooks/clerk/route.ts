@@ -20,9 +20,9 @@ export async function POST(req: Request) {
     );
   }
 
-  // ------------------------
+  // ======================================================
   // Get Svix headers
-  // ------------------------
+  // ======================================================
   const headerPayload = headers();
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
@@ -32,9 +32,9 @@ export async function POST(req: Request) {
     return new Response("Missing Svix headers", { status: 400 });
   }
 
-  // ------------------------
+  // ======================================================
   // Verify webhook payload
-  // ------------------------
+  // ======================================================
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
@@ -68,6 +68,10 @@ export async function POST(req: Request) {
       username,
     } = evt.data;
 
+    if (!id) {
+      return new Response("Missing user id", { status: 400 });
+    }
+
     const user = {
       clerkId: id,
       email: email_addresses?.[0]?.email_address ?? "",
@@ -99,6 +103,10 @@ export async function POST(req: Request) {
   if (eventType === "user.updated") {
     const { id, image_url, first_name, last_name, username } = evt.data;
 
+    if (!id) {
+      return new Response("Missing user id", { status: 400 });
+    }
+
     const user = {
       firstName: first_name ?? "",
       lastName: last_name ?? "",
@@ -116,6 +124,10 @@ export async function POST(req: Request) {
   // ======================================================
   if (eventType === "user.deleted") {
     const { id } = evt.data;
+
+    if (!id) {
+      return new Response("Missing user id", { status: 400 });
+    }
 
     const deletedUser = await deleteUser(id);
 
